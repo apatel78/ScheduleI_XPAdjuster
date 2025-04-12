@@ -38,8 +38,6 @@ namespace ScheduleOne_XPAdjuster
             public int DEALER_COMPLETED_DEAL { get; set; }
             public int ESCAPED_WANTED { get; set; }
             public int ESCAPED_WANTED2 { get; set; }
-            public int SUCCESSFUL_SAMPLE { get; set; }
-            public int HARVESTED_PLANT { get; set; }
             public int ESCAPED_ARREST { get; set; }
 
             // Load the XPConfig from a JSON file
