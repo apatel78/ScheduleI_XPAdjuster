@@ -1,15 +1,17 @@
-# ScheduleI_XPAdjuster
-A XP Adjusting mod for the game [Schedule I](https://store.steampowered.com/app/1284220/Schedule_1/).
+# ScheduleOne_XPAdjuster
+A XP Adjusting mod for the game [Schedule 1](https://store.steampowered.com/app/1284220/Schedule_1/).
 
 ## About
-ScheduleI XP Adjuster lets you customize XP rewards in Schedule I by editing a simple JSON file. Change how much XP is earned for completing deals or evading police to tweak your progression speed and gameplay balance.
+ScheduleOne XP Adjuster lets you customize XP rewards in Schedule I by editing a simple JSON file. Change how much XP is earned for completing deals or evading police to tweak your progression speed and gameplay balance.
 
 ## Installation
 - Install MelonLoader (https://melonwiki.xyz/#)
 - Download the `XPAdjuster.dll` file.
-- Place the `XPAdjuster.dll` file in the Mods folder in your Schedule I installation folder.
-- Place the config folder in the Mods folder in your Schedule I installation folder.
-- Adjust the xp_config.json file, located inside the config folder, as needed.
+- Place the `XPAdjuster.dll` file in the Mods folder in your Schedule 1 installation folder.
+- Note that there are 2 dll files. Use main or alternate based on what beta branch you are running on.
+- Run the game
+- Go to YOURGAMEFOLDER/UserData/ZPAdjuster
+- Adjust the configuration file
 - The mod will automatically start with MelonLoader and will run in the background.
 
 ## Default Configuration
@@ -17,18 +19,14 @@ ScheduleI XP Adjuster lets you customize XP rewards in Schedule I by editing a s
 {
     "PLAYER_COMPLETED_DEAL": 20,
     "DEALER_COMPLETED_DEAL": 10,
-    "SUCCESSFUL_SAMPLE": 50,
     "ESCAPED_ARREST": 20,
     "ESCAPED_WANTED": 40,
     "ESCAPED_WANTED2": 60
 }
 ```
 
-## Version
-Use the _Alternate file if playing on Alternate or Alternate-Beta. Use the _Main file if not playing on a beta branch.
-
 ## Download Link
 This mod is published under the open source MIT license:
-- XPAdjuster GitHub (https://github.com/apatel78/ScheduleI_XPAdjuster)
+- XPAdjuster GitHub (https://github.com/apatel78/ScheduleOne_XPAdjuster)
 - NexusMods (https://www.nexusmods.com/schedule1/mods/568?tab=description)
 - ThunderStore (https://thunderstore.io/c/schedule-i/p/Apatel78/XPAdjuster/)

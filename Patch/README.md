@@ -8,8 +8,10 @@ ScheduleOne XP Adjuster lets you customize XP rewards in Schedule I by editing a
 - Install MelonLoader (https://melonwiki.xyz/#)
 - Download the `XPAdjuster.dll` file.
 - Place the `XPAdjuster.dll` file in the Mods folder in your Schedule 1 installation folder.
-- Place the config folder in the Mods folder in your Schedule 1 installation folder.
-- Adjust the xp_config.json file, located inside the config folder, as needed.
+- Note that there are 2 dll files. Use main or alternate based on what beta branch you are running on.
+- Run the game
+- Go to YOURGAMEFOLDER/UserData/ZPAdjuster
+- Adjust the configuration file
 - The mod will automatically start with MelonLoader and will run in the background.
 
 ## Default Configuration
@@ -17,7 +19,6 @@ ScheduleOne XP Adjuster lets you customize XP rewards in Schedule I by editing a
 {
     "PLAYER_COMPLETED_DEAL": 20,
     "DEALER_COMPLETED_DEAL": 10,
-    "SUCCESSFUL_SAMPLE": 50,
     "ESCAPED_ARREST": 20,
     "ESCAPED_WANTED": 40,
     "ESCAPED_WANTED2": 60
@@ -28,3 +29,4 @@ ScheduleOne XP Adjuster lets you customize XP rewards in Schedule I by editing a
 This mod is published under the open source MIT license:
 - XPAdjuster GitHub (https://github.com/apatel78/ScheduleOne_XPAdjuster)
 - NexusMods (https://www.nexusmods.com/schedule1/mods/568?tab=description)
+- ThunderStore (https://thunderstore.io/c/schedule-i/p/Apatel78/XPAdjuster/)

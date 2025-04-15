@@ -4,65 +4,63 @@ using Newtonsoft.Json;
 using ScheduleOne.Levelling;
 using ScheduleOne.Economy;
 using ScheduleOne.UI;
+using MelonLoader.Utils;
 
-[assembly: MelonInfo(typeof(ScheduleOne_XPAdjuster.Core), "ScheduleOne_XPAdjuster", "1.0.0", "Apatel78", null)]
+[assembly: MelonInfo(typeof(ScheduleOne_XPAdjuster.Core), "ScheduleOne_XPAdjuster", "1.0.2", "Apatel78", null)]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
 namespace ScheduleOne_XPAdjuster
 {
+    public static class ModConfig
+    {
+        public static string config_path = System.IO.Path.Combine(MelonEnvironment.UserDataDirectory, "XPAdjuster");
+        private static MelonPreferences_Category XPCategory;
+        public static MelonPreferences_Entry<int> PlayerCompletedDeal;
+        public static MelonPreferences_Entry<int> DealerCompletedDeal;
+        public static MelonPreferences_Entry<int> EscapedWanted;
+        public static MelonPreferences_Entry<int> EscapedWanted2;
+        public static MelonPreferences_Entry<int> EscapedArrest;
+
+        public static void CreateDirectory()
+        {
+            Directory.CreateDirectory(config_path);
+            Init();
+        }
+
+        public static void Init()
+        {
+            XPCategory = MelonPreferences.CreateCategory("XP Adjustments");
+            PlayerCompletedDeal = XPCategory.CreateEntry<int>("Player Completed Deal XP", 20, "XP awarded when the player completes a deal.");
+            DealerCompletedDeal = XPCategory.CreateEntry<int>("Dealer Completed Deal XP", 10, "XP awarded when a dealer completes a deal.");
+            EscapedWanted = XPCategory.CreateEntry<int>("Escaped Wanted Level 1 XP", 40, "XP awarded for escaping wanted.");
+            EscapedWanted2 = XPCategory.CreateEntry<int>("Escaped Wanted Level 2 XP", 60, "XP awarded for escaping wanted deal or alive.");
+            EscapedArrest = XPCategory.CreateEntry<int>("Escaped Arrest XP", 20, "XP awarded for escaping under arrest.");
+
+            XPCategory.SetFilePath(System.IO.Path.Combine(config_path, "XPAdjusterConfig.cfg"));
+            XPCategory.SaveToFile();
+        }
+    }
+
     public class Core : MelonMod
     {
+        public static int PlayerCompletedDealXP;
+        public static int DealerCompletedDealXP;
+        public static int EscapedWantedXP;
+        public static int EscapedWanted2XP;
+        public static int EscapedArrestXP;
         public override void OnInitializeMelon()
         {
             var harmony = new HarmonyLib.Harmony("com.apatel.schedule1.xppatch");
+
             harmony.PatchAll();
 
-            MelonLogger.Msg("Schedule1 XP Patch initialized!");
+            ModConfig.CreateDirectory();
 
-
-            var config = ConfigCache.XP;
-
-            if (config != null)
-            {
-                MelonLogger.Msg($"Loaded XP config: PLAYER_COMPLETED_DEAL = {config.PLAYER_COMPLETED_DEAL}, DEALER_COMPLETED_DEAL = {config.DEALER_COMPLETED_DEAL}, ESCAPED_ARREST = {config.ESCAPED_ARREST}, ESCAPED_WANTED = {config.ESCAPED_WANTED}, ESCAPED_WANTED2 = {config.ESCAPED_WANTED2}");
-            }
-            else
-            {
-                MelonLogger.Msg("No config file found, using default XP values.");
-            }
-
-        }
-        public class XPConfig
-        {
-            public int PLAYER_COMPLETED_DEAL { get; set; }
-            public int DEALER_COMPLETED_DEAL { get; set; }
-            public int ESCAPED_WANTED { get; set; }
-            public int ESCAPED_WANTED2 { get; set; }
-            public int ESCAPED_ARREST { get; set; }
-
-            // Load the XPConfig from a JSON file
-            public static XPConfig Load(string filePath)
-            {
-                if (!File.Exists(filePath))
-                {
-                    MelonLogger.Msg($"Config file not found at {filePath}, using defaults.");
-                    return null; // Return null if not found
-                }
-
-                string json = File.ReadAllText(filePath);
-                MelonLogger.Msg($"Loaded JSON: {json}"); // Log the raw JSON to debug
-                return JsonConvert.DeserializeObject<XPConfig>(json);
-            }
-        }
-
-        public static class ConfigCache
-        {
-            public static XPConfig XP { get; private set; }
-
-            static ConfigCache()
-            {
-                XP = XPConfig.Load("Mods/config/xp_config.json"); // Load from the specified path
-            }
+            PlayerCompletedDealXP = ModConfig.PlayerCompletedDeal.Value;
+            DealerCompletedDealXP = ModConfig.DealerCompletedDeal.Value;
+            EscapedWantedXP = ModConfig.EscapedWanted.Value;
+            EscapedWanted2XP = ModConfig.EscapedWanted2.Value;
+            EscapedArrestXP = ModConfig.EscapedArrest.Value;
         }
 
         [HarmonyPatch(typeof(LevelManager), "AddXP")]
@@ -70,11 +68,9 @@ namespace ScheduleOne_XPAdjuster
         {
             static bool Prefix(ref int xp)
             {
-                var config = ConfigCache.XP;
-
                 if (xp == 10)
                 {
-                    xp = config?.DEALER_COMPLETED_DEAL ?? 10;
+                    xp = Core.DealerCompletedDealXP;
                     // MelonLogger.Msg($"XP overridden for DEALER_COMPLETED_DEAL: 10 -> {xp}");
                     PlayerDealChecker.IsProcessHandoverCalled = false;
                     // XPEarnedTracker.DealerDeals++;
@@ -83,27 +79,27 @@ namespace ScheduleOne_XPAdjuster
                 {
                     if (PlayerDealChecker.IsProcessHandoverCalled)
                     {
-                        xp = config?.PLAYER_COMPLETED_DEAL ?? 20;
+                        xp = Core.PlayerCompletedDealXP;
                         // MelonLogger.Msg($"XP overridden for PLAYER_COMPLETED_DEAL: 20 -> {xp}");
                         PlayerDealChecker.IsProcessHandoverCalled = false;
                         // XPEarnedTracker.PlayerDeals++;
                     }
                     else
                     {
-                        xp = config?.ESCAPED_ARREST ?? 20;
+                        xp = Core.EscapedArrestXP;
                         // MelonLogger.Msg($"XP overridden for ESCAPED_ARREST: 20 -> {xp}");
                         // XPEarnedTracker.EscapedArrests++;
                     }
                 }
                 else if (xp == 40)
                 {
-                    xp = config?.ESCAPED_WANTED ?? 40;
+                    xp = Core.EscapedWantedXP;
                     // MelonLogger.Msg($"XP overridden for ESCAPED_WANTED: 40 -> {xp}");
                     // XPEarnedTracker.EscapedWanteds++;
                 }
                 else if (xp == 60)
                 {
-                    xp = config?.ESCAPED_WANTED2 ?? 60;
+                    xp = Core.EscapedWanted2XP;
                     // MelonLogger.Msg($"XP overridden for ESCAPED_WANTED2: 60 -> {xp}");
                     // XPEarnedTracker.EscapedWanteds2++;
                 }
