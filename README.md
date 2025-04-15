@@ -31,3 +31,4 @@ Use the _Alternate file if playing on Alternate or Alternate-Beta. Use the _Main
 This mod is published under the open source MIT license:
 - XPAdjuster GitHub (https://github.com/apatel78/ScheduleI_XPAdjuster)
 - NexusMods (https://www.nexusmods.com/schedule1/mods/568?tab=description)
+- ThunderStore (https://thunderstore.io/c/schedule-i/p/Apatel78/XPAdjuster/)
