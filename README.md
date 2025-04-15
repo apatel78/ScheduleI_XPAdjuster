@@ -24,6 +24,9 @@ ScheduleI XP Adjuster lets you customize XP rewards in Schedule I by editing a s
 }
 ```
 
+## Version
+Use the _Alternate file if playing on Alternate or Alternate-Beta. Use the _Main file if not playing on a beta branch.
+
 ## Download Link
 This mod is published under the open source MIT license:
 - XPAdjuster GitHub (https://github.com/apatel78/ScheduleI_XPAdjuster)

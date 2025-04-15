@@ -1,0 +1,8 @@
+{
+    "name": "XPAdjuster",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/apatel78/ScheduleI_XPAdjuster",
+    "description": "Customize XP rewards in Schedule I by editing a simple JSON file",
+    "dependencies": [
+    ]
+}
